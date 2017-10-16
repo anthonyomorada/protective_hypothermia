@@ -1,0 +1,39 @@
+---
+title: "Is Hypothermia Protective?"
+author: "Anthony Morada, and Garrison Davis"
+date: "October 13, 2017"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+require(XLConnect)
+wb = loadWorkbook("~/data/levophed hypothermia pts.xls")
+df = readWorksheet(wb, sheet = "Sheet1")
+df <- df[rowSums(is.na(df))!=ncol(df), ]
+
+```
+
+
+```{r}
+my.list =list()
+dt = as.data.frame(df[0,])
+
+for(i in 1:nrow(df)){
+     if(grepl("[A-z]", df$Temp[i])){
+          if(nrow(dt)>0){
+               my.list = c(my.list,list(dt))
+               names(my.list)[length(my.list)] = pt.name
+               dt = as.data.frame(df[0,])
+               pt.name <- df$Temp[i]
+          }
+          else
+               pt.name <- df$Temp[i]
+               dt = as.data.frame(df[0,])
+     } else if(grepl("[A-z]", df$Temp[i]) == F){
+          dt[nrow(dt) + 1,] = df[i,]
+     } 
+}
+my.list = c(my.list,list(dt))
+names(my.list)[length(my.list)] = pt.name
+```
+

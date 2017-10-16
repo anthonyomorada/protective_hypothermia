@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "---\ntitle: \"Is Hypothermia Protective?\"\nauthor: \"Anthony Morada, and Garrison Davis\"\ndate: \"October 13, 2017\"\noutput: pdf_document\n---\n\n```{r setup, include=FALSE}\nrequire(XLConnect)\nwb = loadWorkbook(\"~/data/levophed hypothermia pts.xls\")\ndf = readWorksheet(wb, sheet = \"Sheet1\")\ndf <- df[rowSums(is.na(df))!=ncol(df), ]\n\n```\n\n\n```{r}\nmy.list =list()\ndt = as.data.frame(df[0,])\n\nfor(i in 1:nrow(df)){\n     if(grepl(\"[A-z]\", df$Temp[i])){\n          if(nrow(dt)>0){\n               my.list = c(my.list,list(dt))\n               names(my.list)[length(my.list)] = pt.name\n               dt = as.data.frame(df[0,])\n               pt.name <- df$Temp[i]\n          }\n          else\n               pt.name <- df$Temp[i]\n               dt = as.data.frame(df[0,])\n     } else if(grepl(\"[A-z]\", df$Temp[i]) == F){\n          dt[nrow(dt) + 1,] = df[i,]\n     } \n}\nmy.list = c(my.list,list(dt))\nnames(my.list)[length(my.list)] = pt.name\n```\n\n",
+    "created" : 1508157333039.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "4169064511",
+    "id" : "CBAF3333",
+    "lastKnownWriteTime" : 1508157044,
+    "last_content_update" : 1508157339542,
+    "path" : "~/GitHub/Protective-Hypothermia/Protective Hypothermia.Rmd",
+    "project_path" : "Protective Hypothermia.Rmd",
+    "properties" : {
+        "last_setup_crc32" : "911F7B72858293fa"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}
