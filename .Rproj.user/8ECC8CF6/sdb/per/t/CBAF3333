@@ -1,18 +1,18 @@
 {
     "collab_server" : "",
-    "contents" : "---\ntitle: \"Is Hypothermia Protective?\"\nauthor: \"Anthony Morada, and Garrison Davis\"\ndate: \"October 13, 2017\"\noutput: pdf_document\n---\n\n```{r setup, include=FALSE}\nrequire(XLConnect)\nwb = loadWorkbook(\"~/data/levophed hypothermia pts.xls\")\ndf = readWorksheet(wb, sheet = \"Sheet1\")\ndf <- df[rowSums(is.na(df))!=ncol(df), ]\n\n```\n\n\n```{r}\nmy.list =list()\ndt = as.data.frame(df[0,])\n\nfor(i in 1:nrow(df)){\n     if(grepl(\"[A-z]\", df$Temp[i])){\n          if(nrow(dt)>0){\n               my.list = c(my.list,list(dt))\n               names(my.list)[length(my.list)] = pt.name\n               dt = as.data.frame(df[0,])\n               pt.name <- df$Temp[i]\n          }\n          else\n               pt.name <- df$Temp[i]\n               dt = as.data.frame(df[0,])\n     } else if(grepl(\"[A-z]\", df$Temp[i]) == F){\n          dt[nrow(dt) + 1,] = df[i,]\n     } \n}\nmy.list = c(my.list,list(dt))\nnames(my.list)[length(my.list)] = pt.name\n```\n\n",
+    "contents" : "---\ntitle: \"Is Hypothermia Protective?\"\nauthor: \"Anthony Morada, and Garrison Davis\"\ndate: \"October 13, 2017\"\noutput: pdf_document\n---\n\n```{r setup, include=F,warning=F}\nrequire(XLConnect)\nwb = loadWorkbook(\"~/data/levophed hypothermia pts.xls\")\ndf = readWorksheet(wb, sheet = \"Sheet1\")\ndf <- df[rowSums(is.na(df))!=ncol(df), ]\n```\n\n```{r cleaning data, include=F,warning=F}\nmy.list =list()\ndt = as.data.frame(df[0,])\n\nfor(i in 1:nrow(df)){\n     if(grepl(\"[A-z]\", df$Temp[i])){\n          if(nrow(dt)>0){\n               my.list = c(my.list,list(dt))\n               names(my.list)[length(my.list)] = pt.name\n               dt = as.data.frame(df[0,])\n               pt.name <- df$Temp[i]\n          }\n          else\n               pt.name <- df$Temp[i]\n               dt = as.data.frame(df[0,])\n     } else if(grepl(\"[A-z]\", df$Temp[i]) == F){\n          dt[nrow(dt) + 1,] = df[i,]\n     } \n}\nmy.list = c(my.list,list(dt))\nnames(my.list)[length(my.list)] = pt.name\n```\n\n```{r merging list, include=F,warning=F}\nfor(i in 1:length(my.list)){\n     pt.name <- names(my.list[i])\n     my.list[[i]]$Name <- pt.name\n}\n\ndt <- Reduce(rbind, my.list)\ndt$Name = as.factor(dt$Name)\ndt$Temp = as.numeric(dt$Temp)\ndt$Dobutamine[is.na(dt$Dobutamine)] = 0 \ndt$EPI.Dose[is.na(dt$EPI.Dose)] = 0 \ndt$VASO.Dose[is.na(dt$VASO.Dose)] = 0 \ndt$LEVO.Dose[is.na(dt$LEVO.Dose)] = 0 \ndt$VIS = dt$Dobutamine + (100 * dt$EPI.Dose) + (10000 * dt$VASO.Dose) + (100 * dt$LEVO.Dose)\n```\n\n\n```{r}\ndt = subset(dt, dt$Name != \"dos\")\n```\n\n\n\n```{r Plot, echo=F,warning=F,message=F, fig.height=3}\nrequire(ggplot2)\nggplot(data=dt, aes(x = Temp, y = Map, color = Name)) + geom_point(na.rm = T) + geom_smooth(method = \"lm\",na.rm = T)\n\nggplot(data=dt, aes(x = Temp, y = Net.IV.Fluids.hr, color = Name)) + geom_point(na.rm = T) + geom_smooth(method = \"lm\",na.rm = T)\n\nggplot(data=dt, aes(x = Temp, y = VIS, color = Name)) + geom_point(na.rm = T) + geom_smooth(method = \"lm\",na.rm = T)\n\n```\n\n```{r}\ndt$VIS = dt$Dobutamine + (100 * dt$EPI.Dose) + (10000 * dt$VASO.Dose) + (100 * dt$LEVO.Dose)\n```\n\n\n```{r}\nsummary(lm(VIS~Temp, dt))\nsummary(lm(VIS~Temp+Name, dt))\n```\n\n",
     "created" : 1508157333039.000,
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
-    "hash" : "4169064511",
+    "hash" : "2989046428",
     "id" : "CBAF3333",
-    "lastKnownWriteTime" : 1508157044,
-    "last_content_update" : 1508157339542,
+    "lastKnownWriteTime" : 1510453552,
+    "last_content_update" : 1510453553025,
     "path" : "~/GitHub/Protective-Hypothermia/Protective Hypothermia.Rmd",
     "project_path" : "Protective Hypothermia.Rmd",
     "properties" : {
-        "last_setup_crc32" : "911F7B72858293fa"
+        "last_setup_crc32" : ""
     },
     "relative_order" : 1,
     "source_on_save" : false,
