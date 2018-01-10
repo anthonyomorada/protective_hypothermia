@@ -5,16 +5,14 @@ date: "October 13, 2017"
 output: pdf_document
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include=F,warning=F}
 require(XLConnect)
 wb = loadWorkbook("~/data/levophed hypothermia pts.xls")
 df = readWorksheet(wb, sheet = "Sheet1")
 df <- df[rowSums(is.na(df))!=ncol(df), ]
-
 ```
 
-
-```{r}
+```{r cleaning data, include=F,warning=F}
 my.list =list()
 dt = as.data.frame(df[0,])
 
@@ -35,5 +33,48 @@ for(i in 1:nrow(df)){
 }
 my.list = c(my.list,list(dt))
 names(my.list)[length(my.list)] = pt.name
+```
+
+```{r merging list, include=F,warning=F}
+for(i in 1:length(my.list)){
+     pt.name <- names(my.list[i])
+     my.list[[i]]$Name <- pt.name
+}
+
+dt <- Reduce(rbind, my.list)
+dt$Name = as.factor(dt$Name)
+dt$Temp = as.numeric(dt$Temp)
+dt$Dobutamine[is.na(dt$Dobutamine)] = 0 
+dt$EPI.Dose[is.na(dt$EPI.Dose)] = 0 
+dt$VASO.Dose[is.na(dt$VASO.Dose)] = 0 
+dt$LEVO.Dose[is.na(dt$LEVO.Dose)] = 0 
+dt$VIS = dt$Dobutamine + (100 * dt$EPI.Dose) + (10000 * dt$VASO.Dose) + (100 * dt$LEVO.Dose)
+```
+
+
+```{r}
+dt = subset(dt, dt$Name != "dos")
+```
+
+
+
+```{r Plot, echo=F,warning=F,message=F, fig.height=3}
+require(ggplot2)
+ggplot(data=dt, aes(x = Temp, y = Map, color = Name)) + geom_point(na.rm = T) + geom_smooth(method = "lm",na.rm = T)
+
+ggplot(data=dt, aes(x = Temp, y = Net.IV.Fluids.hr, color = Name)) + geom_point(na.rm = T) + geom_smooth(method = "lm",na.rm = T)
+
+ggplot(data=dt, aes(x = Temp, y = VIS, color = Name)) + geom_point(na.rm = T) + geom_smooth(method = "lm",na.rm = T)
+
+```
+
+```{r}
+dt$VIS = dt$Dobutamine + (100 * dt$EPI.Dose) + (10000 * dt$VASO.Dose) + (100 * dt$LEVO.Dose)
+```
+
+
+```{r}
+summary(lm(VIS~Temp, dt))
+summary(lm(VIS~Temp+Name, dt))
 ```
 
