@@ -1,0 +1,5 @@
+"0","require(ggplot2)"
+"2","Loading required package: ggplot2
+"
+"2","package ‘ggplot2’ was built under R version 3.4.3"
+"0","ggplot(data=dt, aes(x = Temp, y = Map, color = Name)) + geom_point(na.rm = T) + geom_smooth(method = ""lm"",na.rm = T)"

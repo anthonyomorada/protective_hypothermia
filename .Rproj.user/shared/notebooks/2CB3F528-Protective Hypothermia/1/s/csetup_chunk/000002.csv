@@ -1,4 +1,4 @@
 "0","require(XLConnect)"
-"0","wb = loadWorkbook(""~/data/levophed hypothermia pts.xls"")"
+"0","wb = loadWorkbook(""~/data/levophed hypothermia pts2.0.xls"")"
 "0","df = readWorksheet(wb, sheet = ""Sheet1"")"
 "0","df <- df[rowSums(is.na(df))!=ncol(df), ]"
