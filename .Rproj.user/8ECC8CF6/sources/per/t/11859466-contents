@@ -1,0 +1,53 @@
+---
+title: "Protective Hypothermia"
+author: "Anthony Morada and Garrison Davis"
+date: "January 26, 2018"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+require(dplyr)
+df <- read.csv("./prot-hypothermia.csv")
+```
+
+```{r clean}
+df <- select(df, -X)
+#Removing rows without temperature
+df <- filter(df, -is.na(df$Temp)==FALSE)
+#Eliminating pts with less than 2 temperature datapoints
+df <- df[ave(seq_along(df$Name), df$Name, FUN=length) >= 2,]
+df$Name <- as.character(df$Name)
+```
+
+```{r new table}
+dt <- data.frame(Patient=as.character(unique(df$Name)), Temp1 = as.numeric(NA), VIS1 = as.numeric(NA), Temp2 = as.numeric(NA), VIS2 = as.numeric(NA))
+
+
+for(i in 1:nrow(dt)){
+     name <- as.character(dt$Patient[i])
+     temp <- df[df$Name == name,]
+     temp <- temp[order(temp$Temp),]
+     dt$Temp2[i] <- temp$Temp[1]
+     dt$Temp1[i] <- temp$Temp[length(temp$Temp)]
+     dt$VIS2[i] <- temp$VIS[1]
+     dt$VIS1[i] <- temp$VIS[length(temp$VIS)]
+}
+
+dt$dTemp <- dt$Temp1 - dt$Temp2
+dt$dVIS <- dt$VIS1 - dt$VIS2
+
+print(dt)
+
+```
+
+```{r plot and correlation}
+plot(dt$dTemp, dt$dVIS)  
+cor(dt$dTemp, dt$dVIS)
+```
+
+
+
+
+```{r}
+write.csv(df, "./hypothermia-study.csv", row.names = F)
+```

@@ -4,17 +4,17 @@
     "created" : 1508157333039.000,
     "dirty" : false,
     "encoding" : "UTF-8",
-    "folds" : "",
+    "folds" : "0|3|5|0|\n14|41|35|0|\n37|40|51|0|\n53|6|55|0|\n57|28|59|0|\n71|6|73|0|\n75|6|78|0|\n80|6|86|0|\n",
     "hash" : "1628739183",
     "id" : "CBAF3333",
-    "lastKnownWriteTime" : 1516919094,
-    "last_content_update" : 1516919324087,
+    "lastKnownWriteTime" : 1517000712,
+    "last_content_update" : 1518388980387,
     "path" : "~/GitHub/Protective-Hypothermia/Protective Hypothermia.Rmd",
     "project_path" : "Protective Hypothermia.Rmd",
     "properties" : {
-        "cursorPosition" : "17,0",
-        "last_setup_crc32" : "12A6C91d84c83ce",
-        "scrollLine" : "7"
+        "cursorPosition" : "11,40",
+        "last_setup_crc32" : "27B4309Cd84c83ce",
+        "scrollLine" : "12"
     },
     "relative_order" : 1,
     "source_on_save" : false,
