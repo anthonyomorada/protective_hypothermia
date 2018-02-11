@@ -1,0 +1,7 @@
+"0","df <- select(df, -X)"
+"0","#Removing rows without temperature"
+"0","df <- filter(df, -is.na(df$Temp)==FALSE)"
+"2","package ‘bindrcpp’ was built under R version 3.4.2"
+"0","#Eliminating pts with less than 2 temperature datapoints"
+"0","df <- df[ave(seq_along(df$Name), df$Name, FUN=length) >= 2,]"
+"0","df$Name <- as.character(df$Name)"

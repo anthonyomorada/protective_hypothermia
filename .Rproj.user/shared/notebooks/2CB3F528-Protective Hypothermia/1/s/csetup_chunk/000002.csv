@@ -1,4 +1,16 @@
 "0","require(XLConnect)"
+"2","Loading required package: XLConnect
+"
+"2","Loading required package: XLConnectJars
+"
+"2","XLConnect 0.2-14 by Mirai Solutions GmbH [aut],
+  Martin Studer [cre],
+  The Apache Software Foundation [ctb, cph] (Apache POI),
+  Graph Builder [ctb, cph] (Curvesapi Java library)
+"
+"2","http://www.mirai-solutions.com
+https://github.com/miraisolutions/xlconnect
+"
 "0","wb = loadWorkbook(""~/data/levophed hypothermia pts2.0.xls"")"
-"0","df = readWorksheet(wb, sheet = ""Sheet1"")"
-"0","df <- df[rowSums(is.na(df))!=ncol(df), ]"
+"2","Error: FileNotFoundException (Java): File 'levophed hypothermia pts2.0.xls' could not be found - you may specify to automatically create the file if not existing.
+"
