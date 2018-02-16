@@ -1,0 +1,72 @@
+---
+title: "Protective Hypothermia"
+author: "Anthony Morada"
+date: "February 15, 2018"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+# Working with cleaned and deidentified data. Saved within this repository.
+df <- read.csv("./hypothermia-study.csv")
+levels(df$Name) <- sub("^pt#8$", "pt#2", levels(df$Name))
+df$Name <- factor(df$Name, levels(df$Name)[c(1,7,2:6)])
+require(ggplot2)
+knitr::opts_chunk$set(fig.width=10, fig.height=6) 
+
+```
+## Original Data
+
+First 6 lines of deidentified data:
+```{r original data present, echo=F}
+head(df)
+```
+
+Data contains `r nrow(df)` time points with Temperature and associated VIS score. There are `r length(unique(df$Name))` unique patients included in this dataset. The number of data points for patients `r levels(df$Name)` are `r summary(df$Name)` respectively.
+
+```{r plot, echo=FALSE}
+ggplot(data=df, aes(x = Temp, y = VIS, color = Name)) + 
+     geom_point() +
+     geom_smooth(method = "lm", se = FALSE) +
+     labs(x= "Temperature (C)", y= "VIS", title = "Vasoactive-Inotropic Score")
+
+```
+
+
+
+## dTemp and dVIS Analysis
+
+Table generated from taking data from the highest and lower temperature with their associated VIS score.   
+dTemp = Temp1(Temp max) - Temp2(Temp min)  
+dVIS = VIS1(VIS at Temp max) - VIS2(VIS at Temp min)  
+
+
+```{r max-min analysis, echo=F}
+dt <- data.frame(Patient=as.character(unique(df$Name)), Temp1 = as.numeric(NA), VIS1 = as.numeric(NA), Temp2 = as.numeric(NA), VIS2 = as.numeric(NA))
+
+
+for(i in 1:nrow(dt)){
+     name <- as.character(dt$Patient[i])
+     temp <- df[df$Name == name,]
+     temp <- temp[order(temp$Temp),]
+     dt$Temp2[i] <- temp$Temp[1]
+     dt$Temp1[i] <- temp$Temp[length(temp$Temp)]
+     dt$VIS2[i] <- temp$VIS[1]
+     dt$VIS1[i] <- temp$VIS[length(temp$VIS)]
+}
+
+dt$dTemp <- dt$Temp1 - dt$Temp2
+dt$dVIS <- dt$VIS1 - dt$VIS2
+
+print(dt)
+```
+
+
+
+```{r plotting max-min, echo=FALSE}
+ggplot(data=dt, aes(x= dTemp, y= dVIS, color = Patient)) +
+     geom_point() +
+     labs(x= "Temperature Difference (C)", y= "VIS Difference", title = "Max Temp - Min Temp")
+```
+
+The correlation coefficient of Temperature Difference and VIs difference is `r cor(dt$dTemp, dt$dVIS)`.
+
