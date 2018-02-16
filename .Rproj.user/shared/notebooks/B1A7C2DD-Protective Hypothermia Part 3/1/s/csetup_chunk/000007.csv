@@ -1,0 +1,5 @@
+"0","# Working with cleaned and deidentified data. Saved within this repository."
+"0","df <- read.csv(""./hypothermia-study.csv"")"
+"0","levels(df$Name) <- sub(""^pt#8$"", ""pt#2"", levels(df$Name))"
+"0","df$Name <- factor(df$Name, levels(df$Name)[c(1,7,2:6)])"
+"0","require(ggplot2)"
