@@ -1,0 +1,1 @@
+"0","dt <- df[is.na(df$Temp) == F & is.na(df$VIS) == F,]"

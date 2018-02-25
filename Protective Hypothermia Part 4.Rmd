@@ -1,0 +1,59 @@
+---
+title: "Protective Hypothermia Part 4"
+author: "Anthony Morada and Garrison Davis"
+date: "February 25, 2018"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+# Working with cleaned and deidentified data. Saved within this repository.
+df <- read.csv("./prot-hypothermia.csv")
+
+require(ggplot2)
+knitr::opts_chunk$set(fig.width=10, fig.height=6) 
+
+```
+
+
+## Original Data
+
+First 6 lines of deidentified data:
+```{r original data present, echo=F}
+head(df)
+dt <- df[is.na(df$Temp) == F & is.na(df$VIS) == F,]
+```
+
+Data contains `r nrow(df)` time points.There are `r length(levels(df$Name))` unique patients in this report. There are `r summary(df$Name)` time points for `r levels(df$Name)` respectively.
+
+  
+However, not all of the rows contain Temperature or VIS Scores. Out of the `r nrow(df)` time points in this data table, `r nrow(df[is.na(df$Temp) == F & is.na(df$VIS) == F,])` contained both VIS and Temperature Values. Rows without Temperature or VIS values were removed. After subset, `r summary(dt$Name)` time points were found for patients `r levels(dt$Name)` respectively. Unfortunately after subset, pt#8 only had 1 eligible row and had to be removed from the analysis leaving 
+
+```{r, echo=F}
+dt <- dt[dt$Name != "pt#8",]
+dt$Name <- factor(dt$Name)
+rm(df)
+```
+
+Therefore, the final table before analysis contains `r length(levels(dt$Name))` patients with `r nrow(dt)` time points that have both VIS and Temperature values. Patients  `r levels(dt$Name)` have `r summary(dt$Name)` time points respectively. 
+
+```{r plot, echo=FALSE}
+
+ggplot(data=dt, aes(x = Hour, y = Temp, color = Name)) + 
+     geom_line() +
+     labs(x= "Hour", y= "Temperature (C)", title = "Temperature Over Time")
+
+ggplot(data=dt, aes(x = Hour, y = VIS, color = Name)) + 
+     geom_line() +
+     labs(x= "Hour", y= "VIS", title = "VIS Over Time")
+
+ggplot(data=dt, aes(x = Temp, y = VIS, color = Name)) + 
+     geom_point() +
+     geom_smooth(method = "lm", se = FALSE) +
+     geom_text(aes(label = Hour), position = position_nudge(y = -200)) +
+     labs(x= "Temperature (C)", y= "VIS", title = "Hypothermia VIS Score")
+```
+
+
+
+
+

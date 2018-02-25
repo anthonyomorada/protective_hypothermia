@@ -1,0 +1,4 @@
+"0","# Working with cleaned and deidentified data. Saved within this repository."
+"0","df <- read.csv(""./prot-hypothermia.csv"")"
+"0","require(ggplot2)"
+"0","knitr::opts_chunk$set(fig.width=10, fig.height=6) "
