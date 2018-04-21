@@ -1,0 +1,15 @@
+---
+title: "Protective Hypothermia Part 5"
+author: "Anthony Morada and Garrison Davis"
+date: "April 21, 2018"
+output: pdf_document
+---
+
+##Preparing Figures for Presentation
+```{r setup, include=FALSE}
+# Working with cleaned and deidentified data. Saved within this repository.
+df <- read.csv("./prot-hypothermia.v3.csv")
+
+require(ggplot2)
+knitr::opts_chunk$set(fig.width=10, fig.height=6) 
+```

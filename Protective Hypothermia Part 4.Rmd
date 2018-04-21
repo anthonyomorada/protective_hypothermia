@@ -37,7 +37,6 @@ rm(df)
 Therefore, the final table before analysis contains `r length(levels(dt$Name))` patients with `r nrow(dt)` time points that have both VIS and Temperature values. Patients  `r levels(dt$Name)` have `r summary(dt$Name)` time points respectively. 
 
 ```{r plot, echo=FALSE}
-
 ggplot(data=dt, aes(x = Hour, y = Temp, color = Name)) + 
      geom_line() +
      labs(x= "Hour", y= "Temperature (C)", title = "Temperature Over Time")
@@ -51,6 +50,14 @@ ggplot(data=dt, aes(x = Temp, y = VIS, color = Name)) +
      geom_smooth(method = "lm", se = FALSE) +
      geom_text(aes(label = Hour), position = position_nudge(y = -200)) +
      labs(x= "Temperature (C)", y= "VIS", title = "Hypothermia VIS Score")
+```
+
+
+
+```{r}
+
+
+
 ```
 
 
