@@ -54,12 +54,6 @@ ggplot(data=dt, aes(x = Temp, y = VIS, color = Name)) +
 
 
 
-```{r}
-
-
-
-```
-
 
 
 
