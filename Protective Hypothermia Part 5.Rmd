@@ -39,6 +39,8 @@ ggplot(data=dt, aes(x = Hour, y = Temp, color = Name)) +
           legend.box.background = element_rect(fill = "transparent"), # get rid of legend panel bg
           text = element_text(size = 30)
      )
+
+
 ggsave(last_plot(), filename = "./fig1.png", width = 27, height = 10, units = "in", bg = "transparent")
 
 
